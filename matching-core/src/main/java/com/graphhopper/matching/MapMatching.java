@@ -116,12 +116,16 @@ public class MapMatching {
         uTurnDistancePenalty = headingTimePenalty * PENALTY_CONVERSION_VELOCITY;
 
         boolean disableCH = hints.getBool(Parameters.CH.DISABLE, false);
-        if (graphHopper.getCHPreparationHandler().isEnabled() && disableCH && !graphHopper.getCHPreparationHandler().isDisablingAllowed())
+        if (graphHopper.getCHPreparationHandler().isEnabled() && disableCH && !graphHopper.isCHDisablingAllowed())
             throw new IllegalArgumentException("Disabling CH is not allowed");
 
         if (graphHopper.getCHPreparationHandler().isEnabled() && !disableCH) {
             ch = true;
             routingGraph = graphHopper.getGraphHopperStorage().getCHGraph(profile.getName());
+            if (routingGraph == null)
+                throw new IllegalArgumentException("Cannot find CH preparation for the requested profile: '" + profile + "'" +
+                        "\nYou can try disabling CH using " + Parameters.CH.DISABLE + "=true" +
+                        "\navailable CH profiles: " + graphHopper.getGraphHopperStorage().getCHGraphNames());
         } else {
             ch = false;
             routingGraph = graphHopper.getGraphHopperStorage();
