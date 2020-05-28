@@ -116,7 +116,7 @@ public class MapMatching {
         uTurnDistancePenalty = headingTimePenalty * PENALTY_CONVERSION_VELOCITY;
 
         boolean disableCH = hints.getBool(Parameters.CH.DISABLE, false);
-        if (graphHopper.getCHPreparationHandler().isEnabled() && disableCH && !graphHopper.isCHDisablingAllowed())
+        if (graphHopper.getCHPreparationHandler().isEnabled() && disableCH && !graphHopper.getRoutingConfig().isCHDisablingAllowed())
             throw new IllegalArgumentException("Disabling CH is not allowed");
 
         if (graphHopper.getCHPreparationHandler().isEnabled() && !disableCH) {
