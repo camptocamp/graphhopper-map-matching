@@ -1,0 +1,51 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build code and run tests
+          command: mvn package -DskipTests
+
+  dockerhub:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Deploy to docker hub
+          command: c2c/dockerbuild.sh && echo $DHUB_PASSWORD | docker login --username="$DHUB_USERNAME" --password-stdin && c2c/publish.sh ; docker logout
+
+workflows:
+  version: 2
+  push_workflow:
+    jobs:
+      - build
+
+  publish_workflow:
+    jobs:
+      - dockerhub:
+          filters:
+            tags:
+              only: /^release\/\d+\.\d+\.\d+/
+            branches:
+              only: /^release_.+/
+
+  nightly_publish_workflow:
+    triggers:
+      - schedule:
+          cron: 0 0 * * *
+          filters:
+            branches:
+              only: /^release_.+/
+    jobs:
+      - dockerhub
