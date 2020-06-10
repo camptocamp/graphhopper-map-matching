@@ -10,6 +10,9 @@ import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+
 public class MapMatchingApplication extends Application<MapMatchingServerConfiguration> {
 
     public static void main(String[] args) throws Exception {
@@ -30,6 +33,7 @@ public class MapMatchingApplication extends Application<MapMatchingServerConfigu
     public void run(MapMatchingServerConfiguration graphHopperServerConfiguration, Environment environment) {
         environment.jersey().register(MapMatchingResource.class);
         environment.jersey().register(new RootResource());
+        environment.servlets().addFilter("cors", CORSFilter.class).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "*");
     }
 
 }
