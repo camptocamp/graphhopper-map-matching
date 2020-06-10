@@ -12,6 +12,9 @@ jobs:
     steps:
       - checkout
       - run:
+         name: Initialize submodules
+         command: git submodule update --recursive --init
+      - run:
           name: Build code and run tests
           command: mvn package -DskipTests
 
@@ -20,6 +23,9 @@ jobs:
       - image: circleci/openjdk:11-jdk
     steps:
       - checkout
+      - run:
+         name: Initialize submodules
+         command: git submodule update --recursive --init
       - setup_remote_docker
       - run:
           name: Deploy to docker hub
