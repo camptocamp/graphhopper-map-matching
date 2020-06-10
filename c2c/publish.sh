@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-NAME="camptocamp/graphhopper"
+NAME="camptocamp/graphhopper_map_matching"
 
 function publish {
     local version=$1
