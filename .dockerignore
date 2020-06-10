@@ -1,0 +1,9 @@
+*
+!/graphhopper
+!/hmm-lib
+!/map-data
+!/matching-core
+!/matching-web
+!/matching-web-bundle
+!/mvn-settings.xml
+!/pom.xml 
