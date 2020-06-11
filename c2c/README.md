@@ -6,3 +6,5 @@ Some changes / additions have been done to the graphhopper map-matching code:
 - instructions for building a Docker image;
 - circle CI to build and push the image to docker hub (including CRON);
 - addition of a CORS filter.
+
+To change the version of the engine, update the graphhopper submodule.
